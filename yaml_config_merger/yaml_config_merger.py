@@ -3,7 +3,7 @@ from copy import deepcopy
 
 __all__ = ['merge_config']
 
-def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2) -> dict:
+def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2, child_list_on_top:bool=False) -> dict:
     '''
     merge child_config to parent_config, returns merged config as new dict
     '''
@@ -14,7 +14,10 @@ def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2) -> di
         if type(parent) == dict:
             return {**parent, **child}
         elif type(parent) == list:
-            return [*parent, *child]
+            if child_list_on_top:
+                return [*child, *parent]
+            else:
+                return [*parent, *child]
         else: # child override parent for any other types
             return child
 
@@ -27,7 +30,7 @@ def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2) -> di
                 if type(cv) == dict and type(pv) == dict:
                     parent[ck] = _traverse(pv, cv, max_depth-1)
                 else:
-                    parent[ck] = _merge(parent[ck], cv)
+                    parent[ck] = _merge(pv, cv)
             else:
                 parent[ck] = cv
         return parent
