@@ -15,9 +15,9 @@ def load_config(path:Union[str,Path], **kwargs) -> dict:
     except Exception:
         raise
 
-def dump_config(path:Union[str,Path], config:dict, ensure_ascii=True, **kwargs) -> None:
+def dump_config(path:Union[str,Path], config:dict, ensure_ascii=True, sort=False, **kwargs) -> None:
     try:
         with open(path, 'w') as fp:
-            yaml.dump(config, fp, Dumper=Dumper, allow_unicode=(not ensure_ascii), **kwargs)
+            yaml.dump(config, fp, Dumper=Dumper, allow_unicode=(not ensure_ascii), sort_keys=sort, **kwargs)
     except Exception:
         raise
