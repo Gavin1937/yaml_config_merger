@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 # get descriptions
-description = 'A simple python3 library to merge 2 yaml configs.'
+description = 'A simple python3 library to merge yaml configs.'
 long_description = ''
 with open('README.md', 'r', encoding='utf-8') as file:
     long_description = file.read()
