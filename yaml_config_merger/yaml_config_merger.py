@@ -24,7 +24,7 @@ def merge_config(
                 return [*child, *parent]
             else:
                 return [*parent, *child]
-        elif type(child) == None and ignore_none_child:
+        elif child is None and ignore_none_child:
             return parent
         else: # child override parent for any other types
             return child
@@ -37,6 +37,8 @@ def merge_config(
                 pv = parent[ck]
                 if type(cv) == dict and type(pv) == dict:
                     parent[ck] = _traverse(pv, cv, max_depth-1)
+                elif cv is None and ignore_none_child:
+                    continue
                 else:
                     parent[ck] = _merge(pv, cv)
             else:
@@ -44,16 +46,4 @@ def merge_config(
         return parent
 
     parent_cp = deepcopy(parent_config)
-    # for ck,cv in child_config.items():
-    #     if ck in parent_cp:
-    #         pv = parent_cp[ck]
-    #         if type(cv) == type(pv):
-    #             parent_cp[ck] = _merge_same_types(pv, cv)
-    #         else:
-    #             parent_cp[ck] = cv
-    #     else:
-    #         parent_cp[ck] = cv
-
-    # return parent_cp
-
     return _traverse(parent_cp, child_config, merge_depth)
