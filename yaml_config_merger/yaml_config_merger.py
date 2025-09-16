@@ -3,7 +3,13 @@ from copy import deepcopy
 
 __all__ = ['merge_config']
 
-def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2, child_list_on_top:bool=False) -> dict:
+def merge_config(
+    parent_config:dict,
+    child_config:dict,
+    merge_depth:int=2,
+    child_list_on_top:bool=False,
+    ignore_none_child:bool=False
+) -> dict:
     '''
     merge child_config to parent_config, returns merged config as new dict
     '''
@@ -11,13 +17,15 @@ def merge_config(parent_config:dict, child_config:dict, merge_depth:int=2, child
     def _merge(parent:Any, child:Any) -> Any:
         if type(parent) != type(child):
             return child
-        if type(parent) == dict:
+        if type(parent) == dict and type(child) == dict:
             return {**parent, **child}
-        elif type(parent) == list:
+        elif type(parent) == list and type(child) == list:
             if child_list_on_top:
                 return [*child, *parent]
             else:
                 return [*parent, *child]
+        elif type(child) == None and ignore_none_child:
+            return parent
         else: # child override parent for any other types
             return child
 
