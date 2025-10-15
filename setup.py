@@ -27,6 +27,8 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/Gavin1937/yaml_config_merger',
     version=version['__version__'],
+    license='MIT',
+    license_files=['LICENSE'],
     packages=[
         'yaml_config_merger',
     ],
